@@ -1,0 +1,23 @@
+{
+  "name": "myyelpcamp",
+  "version": "1.0.0",
+  "description": "My implementation of the Yelp Camp code-along project in the Web Dev Bootcamp Course (Colt Steele) on Udemy.com",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caydn12/MyYelpCamp.git"
+  },
+  "author": "Caydn Lofton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caydn12/MyYelpCamp/issues"
+  },
+  "homepage": "https://github.com/caydn12/MyYelpCamp#readme",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2"
+  }
+}
