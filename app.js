@@ -5,7 +5,13 @@ var bodyParser = require("body-parser");
 var campgrounds = [
         { Name: "Salmon Creek", Image: "https://farm9.staticflickr.com/8225/8524305204_43934a319d.jpg" },
         { Name: "Granite Hill", Image: "http://photosforclass.com/download/2602356334" },
-        { Name: "Mountain Goat's Rest", Image: "http://photosforclass.com/download/7121865553" }
+        { Name: "Mountain Goat's Rest", Image: "http://photosforclass.com/download/7121865553" },
+        { Name: "Salmon Creek", Image: "https://farm9.staticflickr.com/8225/8524305204_43934a319d.jpg" },
+        { Name: "Granite Hill", Image: "http://photosforclass.com/download/2602356334" },
+        { Name: "Mountain Goat's Rest", Image: "http://photosforclass.com/download/7121865553" },
+        { Name: "Salmon Creek", Image: "https://farm9.staticflickr.com/8225/8524305204_43934a319d.jpg" },
+        { Name: "Granite Hill", Image: "http://photosforclass.com/download/2602356334" },
+        { Name: "Mountain Goat's Rest", Image: "http://photosforclass.com/download/7121865553" },
     ];
 
 app.use(bodyParser.urlencoded({extended: true}));
