@@ -8,7 +8,8 @@ mongoose.connect("mongodb://localhost/yelp_camp");
 // Schema Setup
 var campgroundSchema = new mongoose.Schema({
     campName: String,
-    campImage: String
+    campImage: String,
+    campDescription: String
 });
 
 var Campground = mongoose.model("Campground", campgroundSchema);
@@ -20,27 +21,43 @@ app.get("/", function(req, res) {
     res.render("landing");
 });
 
+// INDEX - Get all campgrounds
 app.get("/campgrounds", function(req, res) {
     Campground.find({}, function(err, allCampgrounds) {
         if (err) {
             console.log(err);
         } else {
-            res.render("campgrounds", {campgrounds: allCampgrounds})
+            res.render("index", {campgrounds: allCampgrounds})
         }
     });
 });
 
+// NEW - Create a new Campground
 app.get("/campgrounds/new", function(req, res) {
     res.render("new");
 });
 
+// SHOW - Show information about one campground
+app.get("/campgrounds/:id", function(req, res) {
+    Campground.findById(req.params.id, function(err, foundCampground) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("show", {campground: foundCampground});
+        }
+    });
+});
+
+// CREATE - Add a campground to the DB
 app.post("/campgrounds", function(req, res) {
     var name = req.body.campgroundName;
     var image = req.body.campgroundImage;
+    var desc = req.body.campgroundDescription;
     
     var newCampground = {
         campName: name,
-        campImage: image
+        campImage: image,
+        campDescription: desc
     };
     
     Campground.create(newCampground, function(err, newlyCreated) {
