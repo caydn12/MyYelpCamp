@@ -1,22 +1,22 @@
+// NPM
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 
+// Models
+var Campground = require("./models/campground");
+
+// Seed
+var seedDB = require("./seeds");
+seedDB();
+
+// App setup
 mongoose.connect("mongodb://localhost/yelp_camp");
-
-// Schema Setup
-var campgroundSchema = new mongoose.Schema({
-    campName: String,
-    campImage: String,
-    campDescription: String
-});
-
-var Campground = mongoose.model("Campground", campgroundSchema);
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
+// Routes
 app.get("/", function(req, res) {
     res.render("landing");
 });
