@@ -39,7 +39,7 @@ app.get("/campgrounds/new", function(req, res) {
 
 // SHOW - Show information about one campground
 app.get("/campgrounds/:id", function(req, res) {
-    Campground.findById(req.params.id, function(err, foundCampground) {
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
         if (err) {
             console.log(err);
         } else {
@@ -50,9 +50,9 @@ app.get("/campgrounds/:id", function(req, res) {
 
 // CREATE - Add a campground to the DB
 app.post("/campgrounds", function(req, res) {
-    var name = req.body.campgroundName;
-    var image = req.body.campgroundImage;
-    var desc = req.body.campgroundDescription;
+    var name = req.body.name;
+    var image = req.body.image;
+    var desc = req.body.description;
     
     var newCampground = {
         campName: name,
