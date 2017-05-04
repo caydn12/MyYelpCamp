@@ -145,7 +145,18 @@ app.post("/register", function(req, res) {
     });
 });
 
+// Show Login Form
+app.get("/login", function(req, res) {
+    res.render("login");
+});
 
+// Handle Login Logic
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
+    }), function(req, res) { });
+
+// Listen for requests
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("YelpCamp running..."); 
 });
