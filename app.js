@@ -1,15 +1,17 @@
 // NPM
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-
+var express         = require("express"),
+    app             = express(),
+    bodyParser      = require("body-parser"),
+    mongoose        = require("mongoose"),
+    passport        = require("passport"),
+    LocalStrategy   = require("passport-local"),
 // Models
-var Campground = require("./models/campground");
-var Comment = require("./models/comment");
-
-// Seed
-var seedDB = require("./seeds");
+    Campground      = require("./models/campground"),
+    Comment         = require("./models/comment"),
+    User            = require("./models/user"),
+// Seed Data
+    seedDB          = require("./seeds");
+    
 seedDB();
 
 // App setup
