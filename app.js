@@ -14,6 +14,12 @@ var express         = require("express"),
     
 seedDB();
 
+// App setup
+mongoose.connect("mongodb://localhost/yelp_camp");
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
+
 // PASSPORT CONFIGURATION
 app.use(require("express-session")({
     secret: "Not sure what a good secret is, but I figure this works for now!",
@@ -25,12 +31,10 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-// App setup
-mongoose.connect("mongodb://localhost/yelp_camp");
-app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 // ============================
 // CAMPGROUNDS ROUTES
