@@ -54,12 +54,4 @@ router.post("/", function(req, res) {
     });
 });
 
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.redirect("/login");
-    }
-}
-
 module.exports = router;
