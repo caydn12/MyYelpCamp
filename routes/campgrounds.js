@@ -24,12 +24,10 @@ router.get("/new", isLoggedIn, function(req, res) {
 
 // SHOW - Show information about one campground
 router.get("/:id", function(req, res) {
-    console.log("4 ==========================");
     Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
         if (err) {
             console.log(err);
         } else {
-            console.log("5 ==========================");
             res.render("campgrounds/show", {campground: foundCampground});
         }
     });
@@ -63,26 +61,34 @@ router.post("/", isLoggedIn, function(req, res) {
 });
 
 // EDIT - Form to edit a campground's data
-router.get("/:id/edit", function(req, res) {
-    Campground.findById(req.params.id, function(err, foundCampground) {
-        if (err) {
-            res.redirect("/campgrounds");
-        } else {
-            console.log("3 ==========================");
-            res.render("campgrounds/edit", {campground: foundCampground});
-        }
+router.get("/:id/edit", checkCampgroundOwnership, function(req, res) {
+        Campground.findById(req.params.id, function(err, foundCampground) {
+            if (err) {
+                res.redirect("back");
+            } else {
+                res.render("campgrounds/edit", {campground: foundCampground});
+            }
     });
 });
 
 // UPDATE - request to put the updated data in the database
 router.put("/:id", function(req, res) {
-    console.log("1 ==========================");
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground) {
         if (err) {
             res.redirect("/campgrounds");
         } else {
-            console.log("2 ==========================");
             res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
+// DESTROY - Remove a campground
+router.delete("/:id", function(req, res) {
+    Campground.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+            res.redirect("/campgrounds");
+        } else {
+            res.redirect("/campgrounds");
         }
     });
 });
@@ -93,6 +99,24 @@ function isLoggedIn(req, res, next) {
         next();
     } else {
         res.redirect("/login");
+    }
+}
+
+function checkCampgroundOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Campground.findById(req.params.id, function(err, foundCampground) {
+            if (err) {
+                res.redirect("back");
+            } else {
+                if (foundCampground.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
     }
 }
 
