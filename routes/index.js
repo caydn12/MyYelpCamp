@@ -24,10 +24,11 @@ router.post("/register", function(req, res) {
     
     User.register(newUser, req.body.password, function(err, user) {
         if (err) {
-            console.log(err);
-            res.render("register");
+            req.flash("errorMessage", err.message);
+            res.redirect("/register");
         } else {
             passport.authenticate("local")(req, res, function() {
+                req.flash("successMessage", "Welcome to YelpCamp " + user.username + "!");
                 res.redirect("/campgrounds");
             });
         }
@@ -48,6 +49,7 @@ router.post("/login", passport.authenticate("local", {
 // Logout Route
 router.get("/logout", function(req, res) {
     req.logout();
+    req.flash("successMessage", "Successfully Logged Out");
     res.redirect("/campgrounds");
 });
 
