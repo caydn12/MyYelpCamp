@@ -47,11 +47,15 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     
     var newCampground = {
         name: name,
-        image: image,
         description: desc,
         author: author
     };
     
+    var fileExt = image.split('.').pop();
+    if (fileExt == "png" || fileExt == "jpg" || fileExt == "jpeg" || fileExt == "gif") {
+            newCampground.image = image;
+        }
+
     Campground.create(newCampground, function(err, newlyCreated) {
         if (err) {
             console.log(err);
@@ -74,7 +78,38 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res) 
 
 // UPDATE - request to put the updated data in the database
 router.put("/:id", middleware.checkCampgroundOwnership, function(req, res) {
-    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground) {
+    var image = req.body.campground.image;
+    var fileExt = image.split('.').pop();
+    if(fileExt !== undefined) {
+        if (fileExt === "png" || fileExt === "jpg" || fileExt === "jpeg" || fileExt === "gif") {
+            image = req.body.campground.image;
+        } else {
+            image = "http://www.yellowstonenationalparklodges.com/wp-content/gallery/madison-campground/madison-campground-11.jpg";
+            Campground.findById(req.params.id, function(err, foundCampground) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    image = foundCampground.image;
+                }
+            });
+        }
+    } else {
+        Campground.findById(req.params.id, function(err, foundCampground) {
+            if (err) {
+                console.log(err);
+            } else {
+                image = foundCampground.image;
+            }
+        });
+    }
+    
+    var updatedCampground = {
+        name: req.body.campground.name,
+        description: req.body.campground.description,
+        image: image
+    };
+    
+    Campground.findByIdAndUpdate(req.params.id, {$set: {name: updatedCampground.name, description: updatedCampground.description, image: updatedCampground.image}}, {new: true}, function(err, foundCampground) {
         if (err) {
             res.redirect("/campgrounds");
         } else {
