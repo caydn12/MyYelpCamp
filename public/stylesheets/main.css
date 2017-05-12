@@ -13,3 +13,20 @@
 .deleteForm {
     display: inline;
 }
+
+.formButtons {
+    width: 49%;
+}
+
+.formInline {
+    display: inline;
+}
+
+.input-group-addon {
+    min-width: 15%;
+    max-width: 20%;
+}
+
+.input-group {
+    width: 100%;
+}

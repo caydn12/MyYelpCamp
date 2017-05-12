@@ -37,6 +37,7 @@ router.get("/:id", function(req, res) {
 // CREATE - Add a campground to the DB
 router.post("/", middleware.isLoggedIn, function(req, res) {
     var name = req.body.name;
+    var price = req.body.price;
     var image = req.body.image;
     var desc = req.body.description;
     
@@ -47,6 +48,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     
     var newCampground = {
         name: name,
+        price: price,
         description: desc,
         author: author
     };
@@ -106,15 +108,22 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res) {
     var updatedCampground = {
         name: req.body.campground.name,
         description: req.body.campground.description,
+        price: req.body.campground.price,
         image: image
     };
     
-    Campground.findByIdAndUpdate(req.params.id, {$set: {name: updatedCampground.name, description: updatedCampground.description, image: updatedCampground.image}}, {new: true}, function(err, foundCampground) {
-        if (err) {
-            res.redirect("/campgrounds");
-        } else {
-            res.redirect("/campgrounds/" + req.params.id);
-        }
+    Campground.findByIdAndUpdate(req.params.id, {
+        $set: {
+            name: updatedCampground.name,
+            description: updatedCampground.description,
+            price: updatedCampground.price, 
+            image: updatedCampground.image}},
+            {new: true}, function(err, foundCampground) {
+                if (err) {
+                    res.redirect("/campgrounds");
+                } else {
+                    res.redirect("/campgrounds/" + req.params.id);
+                }
     });
 });
 
